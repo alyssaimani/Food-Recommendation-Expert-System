@@ -1,4 +1,5 @@
 (set-strategy depth)
+
 (deftemplate question
     (slot id)
     (slot text))
@@ -14,14 +15,27 @@
 (deftemplate recommendation
     (slot text))
 
+(deftemplate remove-ask
+	(slot id))
+
+(defquery find-ask
+	"retrive ask facts"
+	(declare (variables ))
+	(ask (id ?id) (text ?text)))
+
+(defquery find-recommendation
+	"retrive recommendation facts"
+	(declare (variables ))
+	(recommendation (text ?text)))
+
 (do-backward-chaining answer)
 
 (deffacts questions
-    (question (id 1) (text "Anda ingin makanan manis? [ya/tidak]:"))
-    (question (id 2) (text "Apakah anda sedang dalam program diet? [ya/tidak]:"))
-    (question (id 3) (text "Apakah anda vegetarian? [ya/tidak]:"))
-    (question (id 4) (text "Apakah anda alergi pada kacang? [ya/tidak]:"))
-    (question (id 5) (text "Apakah anda alergi pada buah? [ya/tidak]:"))
+    (question (id 1) (text "Anda ingin makanan manis? [ya/tidak]: "))
+    (question (id 2) (text "Apakah anda sedang dalam program diet? [ya/tidak]: "))
+    (question (id 3) (text "Apakah anda vegetarian? [ya/tidak]: "))
+    (question (id 4) (text "Apakah anda alergi pada kacang? [ya/tidak]: "))
+    (question (id 5) (text "Apakah anda alergi pada buah? [ya/tidak]: "))
     )
 
 (defrule food-1
@@ -76,26 +90,34 @@
     =>
     (assert (ask (id ?id) (text ?text))))
 
-(defrule ask-rule
-    ?i <- (ask (id ?id) (text ?text))
-    =>
-    (bind ?answer "")
-    (while (and (neq (str-compare ?answer "ya")0)
-            (neq (str-compare ?answer "tidak")0)) do 
-        (printout t ?text)
-        (bind ?answer (readline)))
-    (assert (answer (id ?id) (answer ?answer)))
-    (retract ?i))
+;(defrule ask-rule
+;    ?i <- (ask (id ?id) (text ?text))
+;    =>
+;    (bind ?answer "")
+;    (while (and (neq (str-compare ?answer "ya")0)
+;            (neq (str-compare ?answer "tidak")0)) do 
+;        (printout t ?text)
+;        (bind ?answer (readline)))
+;    (assert (answer (id ?id) (answer ?answer)))
+;    (retract ?i))
 
-(defrule print-recommendation
-    (recommendation (text ?text))
-    =>
-    (printout t ?text crlf))
+;(defrule print-recommendation
+;    (recommendation (text ?text))
+;    =>
+;    (printout t ?text crlf))
 
-(defrule no-recommendation
-    (not(recommendation))
-    =>
-    (printout t "Tidak ada rekomendasi makanan yang sesuai" crlf))
+;(defrule no-recommendation
+;    (not(recommendation))
+;    =>
+;    (printout t "Tidak ada rekomendasi makanan yang sesuai" crlf))
 
-(reset)
-(run)
+;(reset)
+;(run)
+
+(defrule remove-ask
+	"rule to remove ask"
+    ?i <- (remove-ask (id ?id))
+    ?j <- (ask (id ?id))
+	=>
+    (retract ?i)
+    (retract ?j))
