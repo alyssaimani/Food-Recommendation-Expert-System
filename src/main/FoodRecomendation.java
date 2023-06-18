@@ -1,24 +1,19 @@
 package main;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
-import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
+import javax.swing.UIManager;
+import javax.swing.plaf.ColorUIResource;
 
 import jess.JessException;
 import jess.QueryResult;
@@ -38,7 +33,6 @@ public class FoodRecomendation extends JFrame {
 	JRadioButton yesBtn = new JRadioButton("Ya", true);
 	JRadioButton noBtn = new JRadioButton("Tidak");
 	ButtonGroup btnGrp = new ButtonGroup();
-	private Map<String, String> imageMapping;
 
 	public FoodRecomendation() throws JessException {
 		
@@ -46,23 +40,29 @@ public class FoodRecomendation extends JFrame {
 		engine.reset();
 		engine.run();
 		
-		textArea.setWrapStyleWord(true);
-		textArea.setEditable(false);
 		res = engine.runQueryStar("find-ask", new ValueVector());
+
+		Font font = new Font("Arial", Font.BOLD,16);
+		textArea.setFont(font);
+		textArea.setLineWrap(true);
+		textArea.setWrapStyleWord(true);
+		textArea.setBackground(new ColorUIResource(255,239,187));
 		
 		if(res.next()) {
 			textArea.setText(res.getString("text"));
 			val = res.get("id");
 		}
 		add(textArea, "North");
+
+		yesBtn.setBackground(new ColorUIResource(255,239,187));
+		noBtn.setBackground(new ColorUIResource(255,239,187));
 		
 		btnGrp.add(yesBtn);
 		btnGrp.add(noBtn);
 		panel.add(yesBtn);
 		panel.add(noBtn);
+		panel.setBackground(new ColorUIResource(255,239,187));
 		add(panel, "Center");
-		
-		initializeImageMapping();
 		
 		nextButton.addActionListener(new ActionListener() {
 			
@@ -92,9 +92,8 @@ public class FoodRecomendation extends JFrame {
 						add(imageLabel, BorderLayout.CENTER);
 						
 						if(result.equals("")) {
-							JOptionPane.showMessageDialog(null, "Tidak ada rekomendasi makanan yang sesuai!");
+							displayRecommendation("Tidak ada rekomendasi makanan yang sesuai");
 						}else {
-							// JOptionPane.showMessageDialog(null, result);
 							displayRecommendation(result);
 						}
 						
@@ -117,46 +116,42 @@ public class FoodRecomendation extends JFrame {
 		});
 		
 		add(nextButton, "South");
+
+		UIManager UI = new UIManager();
+        UI.put("OptionPane.background",new ColorUIResource(255,239,187));
+        UI.put("Panel.background",new ColorUIResource(255,239,187));
 		
 		setTitle("Food Recomendation");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		pack();
+		setSize(350,250);
 		setLocationRelativeTo(null);
 		setVisible(true);
 		
 	}
-	
-	// Method to initialize the image mapping
-	// This mapping is used to map the recommendation text to the image filename
-    private void initializeImageMapping() {
-        imageMapping = new HashMap<>();
-		imageMapping.put("Rekomendasi makanan untuk Anda adalah Lapis Legit", "/src/images/lapis_legit.jpg");
-		imageMapping.put("Rekomendasi makanan untuk Anda adalah Roti Gandum", "/src/images/roti_gandum.jpg");
-		imageMapping.put("Rekomendasi makanan untuk Anda adalah Salad", "/src/images/salad.jpg");
-		imageMapping.put("Rekomendasi makanan untuk Anda adalah Sapo Tahu", "/src/images/sapo_tahu.jpg");
-		imageMapping.put("Rekomendasi makanan untuk Anda adalah Gado-Gado", "/src/images/gado_gado.jpg");
-		imageMapping.put("Rekomendasi makanan untuk Anda adalah Rendang", "/src/images/rendang.jpg");
-        
-    }
 
     // Method to display the recommendation and associated image
     private void displayRecommendation(String recommendationText) {
-        String imageFilename = imageMapping.get(recommendationText);
-        if (imageFilename != null) {
-        	try {
-				BufferedImage image = ImageIO.read(new File(System.getProperty("user.dir") + imageFilename));
-				ImageIcon imageIcon = new ImageIcon(image);
-	            imageLabel.setIcon(imageIcon);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-            
-        }else {
-			JOptionPane.showMessageDialog(null, recommendationText);
+		String imageFilename = "";
+		if (recommendationText.contains("Lapis Legit")) {
+        	imageFilename = "\\src\\images\\lapis_legit.jpg";
+		} else if (recommendationText.contains("Roti Gandum")) {
+			imageFilename = "\\src\\images\\roti_gandum.jpg";
+		} else if (recommendationText.contains("Salad")) {
+			imageFilename = "\\src\\images\\salad.jpg";
+		} else if (recommendationText.contains("Sapo Tahu")) {
+			imageFilename = "\\src\\images\\sapo_tahu.jpg";
+		} else if (recommendationText.contains("Gado-Gado")) {
+			imageFilename = "\\src\\images\\gado_gado.jpg";
+		} else if (recommendationText.contains("Rendang")) {
+			imageFilename = "\\src\\images\\rendang.jpg";
+		} else {
+			imageFilename = "\\src\\images\\not_available.jpg";
 		}
-    }
-	
+
+		RecommendationDialog dialog = new RecommendationDialog(this, recommendationText, System.getProperty("user.dir") + imageFilename);
+		dialog.setVisible(true);
+
+}
 	public static void main(String[] args) throws JessException {
 		new FoodRecomendation();
 	}
