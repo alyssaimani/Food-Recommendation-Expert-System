@@ -36,7 +36,7 @@ public class FoodRecomendation extends JFrame {
 
 	public FoodRecomendation() throws JessException {
 		
-		engine.batch("main/backward.clp");
+		engine.batch("main/forward.clp");
 		engine.reset();
 		engine.run();
 		
