@@ -12,21 +12,13 @@
     (slot id)
     (slot answer))
 
+(deftemplate question-answer
+	(slot id)
+    (slot question)
+    (slot answer))
+
 (deftemplate recommendation
     (slot text))
-
-(deftemplate remove-ask
-	(slot id))
-
-(defquery find-ask
-	"retrive ask facts"
-	(declare (variables ))
-	(ask (id ?id) (text ?text)))
-
-(defquery find-recommendation
-	"retrive recommendation facts"
-	(declare (variables ))
-	(recommendation (text ?text)))
 
 (do-backward-chaining answer)
 
@@ -193,10 +185,14 @@
     (assert (answer (id 15) (answer "tidak")))
     )
 
-(defrule print-answer
+(defrule ques-answer
     (answer (id ?id) (answer ?answer))
+    (question (id ?idx) (text ?question))
     =>
-    (printout t ?id " " ?answer crlf))
+    (assert (question-answer (id ?id) (question ?question) (answer ?answer)))
+    (printout ))
+
+
 
 (reset)
 (bind ?text "")
