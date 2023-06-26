@@ -134,8 +134,8 @@ public class FoodRecomendation extends JFrame {
 		String imageFilename = "";
 		if (recommendationText.contains("Lapis Legit")) {
         	imageFilename = "\\src\\images\\lapis_legit.jpg";
-		} else if (recommendationText.contains("Roti Gandum")) {
-			imageFilename = "\\src\\images\\roti_gandum.jpg";
+		} else if (recommendationText.contains("Yogurt")) {
+			imageFilename = "\\src\\images\\yogurt.jpg";
 		} else if (recommendationText.contains("Salad")) {
 			imageFilename = "\\src\\images\\salad.jpg";
 		} else if (recommendationText.contains("Sapo Tahu")) {
@@ -144,6 +144,28 @@ public class FoodRecomendation extends JFrame {
 			imageFilename = "\\src\\images\\gado_gado.jpg";
 		} else if (recommendationText.contains("Rendang")) {
 			imageFilename = "\\src\\images\\rendang.jpg";
+		} else if (recommendationText.contains("Puding Chia")) {
+			imageFilename = "\\src\\images\\puding_chia.jpg";
+		} else if (recommendationText.contains("Black Forest")) {
+			imageFilename = "\\src\\images\\black_forest.jpg";
+		} else if (recommendationText.contains("Cokelat Batangan")) {
+			imageFilename = "\\src\\images\\cokelat_batangan.jpg";
+		} else if (recommendationText.contains("Ice Cream")) {
+			imageFilename = "\\src\\images\\ice_cream.jpg";
+		} else if (recommendationText.contains("Bubur Sumsum")) {
+			imageFilename = "\\src\\images\\bubur_sumsum.jpg";
+		} else if (recommendationText.contains("Wedang Ronde")) {
+			imageFilename = "\\src\\images\\wedang_ronde.jpg";
+		} else if (recommendationText.contains("Telur Rebus")) {
+			imageFilename = "\\src\\images\\telur_rebus.jpg";
+		} else if (recommendationText.contains("Omelet Sayur")) {
+			imageFilename = "\\src\\images\\omelet_sayur.jpg";
+		} else if (recommendationText.contains("Ikan Bakar Balado")) {
+			imageFilename = "\\src\\images\\ikan_bakar_balado.jpg";
+		} else if (recommendationText.contains("Sop Buntut")) {
+			imageFilename = "\\src\\images\\sop_buntut.jpg";
+		} else if (recommendationText.contains("Ayam Rebus")) {
+			imageFilename = "\\src\\images\\ayam_rebus.jpg";
 		} else {
 			imageFilename = "\\src\\images\\not_available.jpg";
 		}
