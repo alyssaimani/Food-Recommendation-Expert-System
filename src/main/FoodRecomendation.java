@@ -49,7 +49,7 @@ public class FoodRecomendation extends JFrame {
 		textArea.setBackground(new ColorUIResource(255,239,187));
 		
 		if(res.next()) {
-			textArea.setText(res.getString("text"));
+			textArea.setText(res.getString("text")+ " [ya/tidak]:");
 			val = res.get("id");
 		}
 		add(textArea, "North");
@@ -79,7 +79,7 @@ public class FoodRecomendation extends JFrame {
 					res = engine.runQueryStar("find-ask", new ValueVector());
 					
 					if(res.next()) {
-						textArea.setText(res.getString("text"));
+						textArea.setText(res.getString("text")+ " [ya/tidak]:");
 						val = res.get("id");
 					}else {
 						sol = engine.runQueryStar("find-recommendation", new ValueVector());
@@ -101,7 +101,7 @@ public class FoodRecomendation extends JFrame {
 						engine.run();
 						res = engine.runQueryStar("find-ask", new ValueVector());
 						if(res.next()) {
-							textArea.setText(res.getString("text"));
+							textArea.setText(res.getString("text") + " [ya/tidak]:");
 							val = res.get("id");
 						}
 						yesBtn.setSelected(true);
@@ -149,7 +149,7 @@ public class FoodRecomendation extends JFrame {
 		} else if (recommendationText.contains("Black Forest")) {
 			imageFilename = "\\src\\images\\black_forest.jpg";
 		} else if (recommendationText.contains("Cokelat Batangan")) {
-			imageFilename = "\\src\\images\\cokelat_batangan.jpg";
+			imageFilename = "\\src\\images\\coklat_batangan.jpg";
 		} else if (recommendationText.contains("Ice Cream")) {
 			imageFilename = "\\src\\images\\ice_cream.jpg";
 		} else if (recommendationText.contains("Bubur Sumsum")) {
